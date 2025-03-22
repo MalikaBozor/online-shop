@@ -1,6 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AdminModule, AuthModule, UserModule } from './application';
+import {
+  AdminModule,
+  AuthModule,
+  CategoryModule,
+  StoreModule,
+  UserModule,
+} from './application';
 import {
   RedisModuleCustom,
   DatabaseModule,
@@ -22,6 +28,8 @@ import { RolesModule } from './infrastructure/security/guards/roles.module';
     AdminModule,
     RolesModule,
     CustomJwtModule,
+    StoreModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],
