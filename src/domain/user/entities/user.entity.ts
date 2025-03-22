@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { UserRoles } from '../constants/user-role.enum';
 import { BaseEntity } from 'src/common';
+import { StoreEntity } from 'src/domain/store';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -26,4 +27,7 @@ export class UserEntity extends BaseEntity {
     default: UserRoles.user,
   })
   role: UserRoles;
+
+  @ManyToOne(() => StoreEntity, (store) => store.user)
+  stores: StoreEntity[];
 }
