@@ -60,6 +60,26 @@ export class AuthService {
     };
   }
 
+  async loginWithGoogle(googleId: string): Promise<ILogin> {
+    const user = await this.userService.findByGoogleId(googleId);
+
+    if (!user) {
+      throw new BadRequestException('User not found with this Google ID');
+    }
+
+    const payload = {
+      id: user.id,
+      role: user.role,
+    };
+
+    const accessToken = this.jwtService.createAccessToken(payload);
+    const refreshToken = this.jwtService.createRefreshToken(payload);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
   // async resetPassword(dto: ResetPasswordDto, id: string): Promise<IMessage> {
   //   const hashPassword = await this.hashingService.encrypt(dto.password);
   //   dto.password = hashPassword;

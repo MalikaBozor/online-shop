@@ -34,6 +34,14 @@ export class UserService {
     return user;
   }
 
+  async findByGoogleId(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOneBy({ google_id: id });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
   async findAll(): Promise<UserEntity[]> {
     return await this.userRepository.find();
   }

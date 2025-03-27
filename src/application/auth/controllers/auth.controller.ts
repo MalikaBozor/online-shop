@@ -8,6 +8,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UserEntity } from 'src/domain/user/entities/user.entity';
+import { GoogleLoginDto } from 'src/domain/auth/dtos/google-login.dto';
 
 @ApiTags('Authentication')
 @ApiBearerAuth()
@@ -43,6 +44,12 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'User successfully logged in',
+    schema: {
+      properties: {
+        access_token: { type: 'string' },
+        refresh_token: { type: 'string' },
+      },
+    },
   })
   @ApiResponse({ status: 400, description: 'Invalid credentials' })
   async login(@Body() dto: LoginDto) {
@@ -86,5 +93,23 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid refresh token' })
   async refreshTokens(@Body('refresh_token') token: string) {
     return await this.authService.refreshTokens(token);
+  }
+
+  @Public()
+  @Post('google-login')
+  @ApiOperation({ summary: 'Login with Google' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully logged in with Google',
+    schema: {
+      properties: {
+        access_token: { type: 'string' },
+        refresh_token: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({ status: 400, description: 'Invalid Google ID' })
+  async loginWithGoogle(@Body() dto: GoogleLoginDto) {
+    return await this.authService.loginWithGoogle(dto.google_id);
   }
 }

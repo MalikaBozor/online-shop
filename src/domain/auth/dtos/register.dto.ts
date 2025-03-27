@@ -18,7 +18,7 @@ export class RegisterDto {
   @ApiProperty({ description: 'Google ID for social login', required: false })
   @IsString()
   @IsOptional()
-  google_id: string;
+  google_id?: string;
 
   @ApiProperty({ description: 'Password for the account' })
   @IsNotEmpty()
